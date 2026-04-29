@@ -3,80 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>منصة همزة وصل</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body {
-    font-family: Tahoma;
-    background: linear-gradient(135deg, #0f766e, #134e4a);
-    margin: 0;
+body{
+margin:0;
+font-family:'Tajawal';
+background:linear-gradient(160deg,#0f766e,#134e4a);
 }
 
-.container {
-    max-width: 420px;
-    margin: 20px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+.container{
+max-width:420px;
+margin:20px auto;
+background:#fff;
+padding:18px;
+border-radius:18px;
+box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
 
-.logo {
-    text-align: center;
+.logo img{
+width:90px;
+display:block;
+margin:auto;
 }
 
-.logo img {
-    width: 100px;
+h2{text-align:center;margin:10px 0;}
+
+.note-top{
+text-align:center;
+font-size:13px;
+color:#555;
+margin-bottom:10px;
 }
 
-h2 {
-    text-align: center;
-    margin: 10px 0;
+.card{
+background:#f9fafb;
+padding:12px;
+border-radius:14px;
+margin-bottom:12px;
 }
 
-.box {
-    margin: 12px 0;
+.label{
+font-weight:600;
+margin-bottom:8px;
 }
 
-select, input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 15px;
+.options{
+display:flex;
+flex-direction:column;
+gap:8px;
 }
 
-button {
-    width: 100%;
-    padding: 14px;
-    background: #0f766e;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-top: 15px;
+.option{
+padding:14px;
+border:2px solid #e5e7eb;
+border-radius:12px;
+text-align:center;
+cursor:pointer;
 }
 
-button:active {
-    background: #0d5f59;
+.option.active{
+border-color:#0f766e;
+background:#e6fffa;
+font-weight:bold;
+color:#115e59;
 }
 
-.hidden {
-    display: none;
+input,select{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid #ddd;
+margin-top:8px;
 }
 
-.note {
-    font-size: 13px;
-    color: #666;
-    margin-top: 5px;
+button{
+width:100%;
+padding:16px;
+background:#0f766e;
+color:#fff;
+border:none;
+border-radius:14px;
+font-size:16px;
 }
 
-.error {
-    color: red;
-    font-size: 13px;
-}
+.min{font-size:13px;color:#0f766e;}
+.error{color:red;font-size:13px;}
 </style>
-
 </head>
 
 <body>
@@ -84,122 +100,196 @@ button:active {
 <div class="container">
 
 <div class="logo">
-    <img src="https://via.placeholder.com/100">
-    <h2>اختر الباقة</h2>
+<img src="logo.png">
 </div>
 
-<div class="box">
-    <label>نوع الدرس</label>
-    <select id="type" onchange="changeType()">
-        <option value="">اختر</option>
-        <option value="individual">فردي</option>
-        <option value="group">جماعي</option>
-    </select>
+<h2>اختر الباقة</h2>
+
+<div class="note-top">
+🎁 نبدأ دائماً بحصة تجريبية مجانية قبل الاشتراك
 </div>
 
-<!-- فردي -->
-<div id="individualBox" class="hidden">
-
-<div class="box">
-<label>عدد الحصص</label>
-<select id="sessions" onchange="setMinPrice()">
-<option value="2" data-min="15">2 حصص</option>
-<option value="4" data-min="30">4 حصص</option>
-<option value="6" data-min="45">6 حصص</option>
-<option value="8" data-min="60">8 حصص</option>
-<option value="10" data-min="75">10 حصص</option>
-<option value="12" data-min="90">12 حصة</option>
-</select>
+<!-- نوع الدرس -->
+<div class="card">
+<div class="label">نوع الدرس</div>
+<div class="options">
+<div class="option" onclick="selectType('individual',this)">📚 فردي</div>
+<div class="option" onclick="selectType('group',this)">👥 جماعي</div>
+</div>
 </div>
 
+<!-- الباقات -->
+<div class="card" id="optionsBox"></div>
+
+<!-- المواد -->
+<div class="card" id="subjectBox" style="display:none;">
+<div class="label">📚 اختر المادة</div>
+
+<div class="options">
+<div class="option" onclick="selectSubject('القرآن الكريم',this)">📖 القرآن الكريم</div>
+<div class="option" onclick="selectSubject('الحديث النبوي',this)">🕌 الحديث</div>
+<div class="option" onclick="selectSubject('السيرة النبوية',this)">🌿 السيرة</div>
+<div class="option" onclick="selectSubject('الأخلاق النبوية',this)">🤍 الأخلاق</div>
+<div class="option" onclick="selectSubject('اللغة العربية',this)">✍️ اللغة العربية</div>
 </div>
 
-<!-- جماعي -->
-<div id="groupBox" class="hidden">
-
-<div class="box">
-<label>نوع المجموعة</label>
-<select id="groupType" onchange="setMinPrice()">
-<option value="3 طلاب" data-min="35">3 طلاب</option>
-<option value="5 طلاب" data-min="25">5 طلاب</option>
-</select>
+<div class="min">📌 في الدروس الفردية يمكنك اختيار أكثر من مادة</div>
 </div>
 
+<!-- القسم النهائي -->
+<div id="finalBox" style="display:none;">
+
+<div class="card">
+<div class="label">
+🤍 اجعل لك نصيباً في هذا العلم  
+<div style="font-size:12px;color:#555;">
+بمساهمة تناسبك وتنفع غيرك
+</div>
 </div>
 
-<div class="box">
-<label>💰 السعر المناسب لك</label>
-<input type="number" id="price" placeholder="أدخل السعر">
-<div class="note" id="minText"></div>
+<input type="number" id="price" placeholder="أدخل مساهمتك">
+<div class="min" id="minText"></div>
 <div class="error" id="errorText"></div>
 </div>
 
-<div class="box">
-<label>الاسم</label>
-<input type="text" id="name">
+<div class="card">
+<div class="label">الاسم</div>
+<input id="name">
+
+<div class="label">العمر</div>
+<input id="age">
+
+<div class="label">رقم الهاتف</div>
+<input id="phone">
+
+<div class="label">الجنس</div>
+<select id="gender">
+<option>ذكر</option>
+<option>أنثى</option>
+</select>
 </div>
 
-<button onclick="sendWhatsApp()">📩 إرسال الطلب</button>
+<button onclick="send()">📩 إرسال الطلب</button>
+
+</div>
 
 </div>
 
 <script>
 
-let minPrice = 0;
+let subjects=[],type="",selected="",minPrice=0;
 
-function changeType() {
-    let type = document.getElementById("type").value;
-
-    document.getElementById("individualBox").classList.add("hidden");
-    document.getElementById("groupBox").classList.add("hidden");
-
-    if (type === "individual") {
-        document.getElementById("individualBox").classList.remove("hidden");
-    } else if (type === "group") {
-        document.getElementById("groupBox").classList.remove("hidden");
-    }
-
-    setMinPrice();
+// بدون عرض سعر
+function opt(text, pricePerSession, sessions){
+  let min = pricePerSession * sessions;
+  return `<div class="option" onclick="selectOption('${text}',${min},this)">
+  ${text}
+  </div>`;
 }
 
-function setMinPrice() {
-    let type = document.getElementById("type").value;
+// اختيار النوع
+function selectType(t,el){
+type=t;
+subjects=[];
+selected="";
 
-    if (type === "individual") {
-        let select = document.getElementById("sessions");
-        minPrice = select.options[select.selectedIndex].dataset.min;
-    } else if (type === "group") {
-        let select = document.getElementById("groupType");
-        minPrice = select.options[select.selectedIndex].dataset.min;
-    }
+document.querySelectorAll(".option").forEach(o=>o.classList.remove("active"));
+el.classList.add("active");
 
-    document.getElementById("minText").innerText = "الحد الأدنى: " + minPrice + "$";
+let box=document.getElementById("optionsBox");
+
+if(t==="individual"){
+box.innerHTML=`
+<div class="label">الحصص الشهرية</div>
+<div class="options">
+${opt("2 حصة شهرياً",7,2)}
+${opt("4 حصص شهرياً",7,4)}
+${opt("6 حصص شهرياً",7,6)}
+${opt("8 حصص شهرياً",7,8)}
+${opt("10 حصص شهرياً",7,10)}
+${opt("12 حصة شهرياً",7,12)}
+</div>`;
+}else{
+box.innerHTML=`
+<div class="label">الدروس الجماعية (8 حصص شهرياً)</div>
+<div class="options">
+${opt("3 طلاب",4,8)}
+${opt("5 طلاب",3,8)}
+</div>`;
 }
 
-function sendWhatsApp() {
-    let price = document.getElementById("price").value;
-    let name = document.getElementById("name").value;
-    let type = document.getElementById("type").value;
+document.getElementById("subjectBox").style.display="none";
+document.getElementById("finalBox").style.display="none";
+}
 
-    if (!price || price < minPrice) {
-        document.getElementById("errorText").innerText = "⚠️ السعر أقل من الحد الأدنى";
-        return;
-    }
+// اختيار الباقة
+function selectOption(text,min,el){
+selected=text;
+minPrice=min;
 
-    document.getElementById("errorText").innerText = "";
+document.querySelectorAll("#optionsBox .option")
+.forEach(o=>o.classList.remove("active"));
 
-    let sessions = document.getElementById("sessions")?.value || "";
-    let group = document.getElementById("groupType")?.value || "";
+el.classList.add("active");
 
-    let message = `طلب جديد:%0A
+// عرض الحد الأدنى فقط هنا
+document.getElementById("minText").innerText="الحد الأدنى للمساهمة لهذه الباقة: "+minPrice+"$";
+
+document.getElementById("subjectBox").style.display="block";
+}
+
+// اختيار المادة
+function selectSubject(s,el){
+
+if(type==="individual"){
+if(subjects.includes(s)){
+subjects=subjects.filter(x=>x!==s);
+el.classList.remove("active");
+}else{
+subjects.push(s);
+el.classList.add("active");
+}
+}else{
+subjects=[s];
+document.querySelectorAll("#subjectBox .option")
+.forEach(o=>o.classList.remove("active"));
+el.classList.add("active");
+}
+
+document.getElementById("finalBox").style.display="block";
+}
+
+// إرسال
+function send(){
+
+let name=document.getElementById("name").value;
+let age=document.getElementById("age").value;
+let phone=document.getElementById("phone").value;
+let gender=document.getElementById("gender").value;
+let price=document.getElementById("price").value;
+
+if(!type){alert("اختر نوع الدرس");return;}
+if(!selected){alert("اختر الباقة");return;}
+if(subjects.length===0){alert("اختر مادة");return;}
+
+if(!price || price<minPrice){
+document.getElementById("errorText").innerText="⚠️ المساهمة أقل من الحد الأدنى";
+return;
+}
+
+let typeText=type==="individual"?"فردي":"جماعي";
+
+let msg=`طلب جديد:%0A
 الاسم: ${name}%0A
-النوع: ${type}%0A
-عدد الحصص: ${sessions}%0A
-المجموعة: ${group}%0A
-السعر: ${price}$`;
+العمر: ${age}%0A
+الهاتف: ${phone}%0A
+الجنس: ${gender}%0A
+المواد: ${subjects.join(" - ")}%0A
+النوع: ${typeText}%0A
+الباقة: ${selected}%0A
+المساهمة: ${price}$`;
 
-    let phone = "905540205001";
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+window.open(`https://wa.me/905540205001?text=${msg}`);
 }
 
 </script>
